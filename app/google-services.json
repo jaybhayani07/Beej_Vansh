@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "68606574960",
+    "project_id": "beejvansh-860b8",
+    "storage_bucket": "beejvansh-860b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68606574960:android:06d130ef7357033be14fb5",
+        "android_client_info": {
+          "package_name": "com.example.beej_vansh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClPtTIpLD7Hx6Fs63_bNPzdMdVW7bBEoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

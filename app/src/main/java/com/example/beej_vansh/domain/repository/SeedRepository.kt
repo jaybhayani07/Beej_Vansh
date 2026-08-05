@@ -52,11 +52,27 @@ class SeedRepository(private val seedDao: SeedDao) {
         }
     }
 
+    fun getFilteredSeeds(field : String, value : String) : Flow<List<Seed>> = callbackFlow{
+        val listener = seedCollection
+            .whereEqualTo(field,value)
+            .addSnapshotListener { snapshots, exception ->
+                if(exception != null){
+                    return@addSnapshotListener
+                }
+
+                val list = snapshots?.toObjects(Seed::class.java) ?: emptyList()
+                trySend(list)
+            }
+        awaitClose {
+            listener.remove()
+        }
+    }
     fun getAllSeeds() : Flow<List<Seed>> = callbackFlow {
         val subscription = seedCollection.addSnapshotListener { snapshots, exception ->
             if(exception != null){
                 Log.e("FirebaseError","Listen Failed",exception)
-                close(exception)
+                // Do not close(exception) as it crashes the app if unhandled
+                trySend(emptyList())
                 return@addSnapshotListener
             }
 

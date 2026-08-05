@@ -112,6 +112,37 @@ fun LoginScreen(
             if(!isVerificationSent){
                 LazyColumn(modifier = Modifier.padding(16.dp)) {
                     item {
+                        Button(
+                            onClick = {
+                                Toast.makeText(context, "Signing in as Guest...", Toast.LENGTH_SHORT).show()
+                                authViewModel.signInAnonymously(
+                                    onSuccess = {
+                                        Toast.makeText(context, "Welcome, Guest!", Toast.LENGTH_SHORT).show()
+                                        onNavigateToHome()
+                                    },
+                                    onError = { errorMsg ->
+                                        Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+                                    }
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 24.dp)
+                                .height(56.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = brownText),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.Login, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Quick Login (Demo Mode)",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
+                    item {
                         Text(text = "Enter Your Name :-", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = brownText,
                         )
                     }

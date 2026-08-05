@@ -31,11 +31,11 @@ class RequestRepository {
         }
     }
 
-    suspend fun getSendRequest(myId: String) : Flow<List<Request>> = callbackFlow {
+    fun getSendRequest(myId: String) : Flow<List<Request>> = callbackFlow {
         val listener = firestore.collection("requests")
             .whereEqualTo("buyerId",myId)
             .addSnapshotListener { snapshots, error ->
-                if(error != null){
+                if (error != null) {
                     return@addSnapshotListener
                 }
 
@@ -63,8 +63,9 @@ class RequestRepository {
         val listener = firestore.collection("requests")
             .whereEqualTo("sellerId",myId)
             .addSnapshotListener { snapshots, error ->
-                if (error != null) {
-                    Log.e("BeejVansh", "❌ Firestore Error: ${error.message}")
+                if(error != null){
+                    Log.e("FirebaseError","Listen failed",error)
+                    trySend(emptyList())
                     return@addSnapshotListener
                 }
                 Log.d("BeejVansh", "Raw documents found in Firestore: ${snapshots?.size() ?: 0}")

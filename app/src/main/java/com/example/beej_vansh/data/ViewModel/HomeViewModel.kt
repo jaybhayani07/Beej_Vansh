@@ -17,6 +17,8 @@ class HomeViewModel(private val repository: SeedRepository) : ViewModel(){
     private var _seedList = MutableStateFlow<List<Seed>>(emptyList())
     var seedList : StateFlow<List<Seed>> = _seedList.asStateFlow()
 
+    private var _filteredList = MutableStateFlow<List<Seed>>(emptyList())
+    var filteredList : StateFlow<List<Seed>> = _filteredList.asStateFlow()
     private var seedJob: Job? = null
 
 
@@ -30,6 +32,14 @@ class HomeViewModel(private val repository: SeedRepository) : ViewModel(){
                 Math.sin(dLon / 2) * Math.sin(dLon / 2)
         val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
         return earthRadiusKm * c
+    }
+
+    fun listenForFilteredList(field : String,value : String){
+        viewModelScope.launch {
+            repository.getFilteredSeeds(field,value).collect {
+                _filteredList.value = it
+            }
+        }
     }
 
     fun listenForRealTimeSeeds(buyerLat: Double? = null, buyerLon: Double? = null,currentUserId : String? = null){

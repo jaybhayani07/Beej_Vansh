@@ -138,4 +138,42 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
+
+    fun signInAnonymously(onSuccess: () -> Unit, onError: (String) -> Unit) {
+        auth.signInAnonymously().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val currentUser = auth.currentUser
+                if (currentUser != null) {
+                    viewModelScope.launch {
+                        try {
+                            val document = firestore.collection("users").document(currentUser.uid).get().await()
+                            if (!document.exists()) {
+                                // Create a dummy guest profile
+                                val guestProfile = User(
+                                    uid = currentUser.uid,
+                                    firstName = "Guest",
+                                    lastName = "User",
+                                    email = "guest@demo.com",
+                                    phoneNumber = "0000000000",
+                                    soilType = "N/A",
+                                    village = "Demo Village",
+                                    taluka = "Demo Taluka",
+                                    district = "Demo District",
+                                    state = "Demo State",
+                                    lat = 0.0,
+                                    lon = 0.0
+                                )
+                                firestore.collection("users").document(currentUser.uid).set(guestProfile).await()
+                            }
+                            onSuccess()
+                        } catch (e: Exception) {
+                            onError("Failed to create guest profile")
+                        }
+                    }
+                }
+            } else {
+                onError(task.exception?.message ?: "Failed to sign in anonymously")
+            }
+        }
+    }
 }

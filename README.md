@@ -1,3 +1,5 @@
+Live Demo := https://appetize.io/app/android/com.example.beej_vansh?device=pixel7&osVersion=13.0 (First Login in website and after that open application click on guest option)
+
 🌱 BeejVansh: Agri-Tech Seed Marketplace
 BeejVansh is a peer-to-peer (P2P) mobile marketplace designed to empower farmers by facilitating the local trade of high-quality seeds. By leveraging real-time geolocation and a secure "Handshake" connection protocol, the app bridges the gap between seed sellers and buyers while prioritizing user privacy and data reliability in rural areas.
 
